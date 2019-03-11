@@ -21,11 +21,18 @@ const bot = new line.Client(line_config);
 // -----------------------------------------------------------------------------
 // ルーター設定
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
+    // すべてのイベント処理のプロミスを格納する配列。
+    let events_processed = [];
+
+    events_processed.push(bot.replyMessage(event.replyToken, {
+        type: "text",
+        text: "はい？耳が遠いもんで。なんですか？"
+    }));
+
+
     // 先行してLINE側にステータスコード200でレスポンスする。
     res.sendStatus(200);
 
-    // すべてのイベント処理のプロミスを格納する配列。
-    let events_processed = [];
 
     // イベントオブジェクトを順次処理。
     req.body.events.forEach((event) => {
