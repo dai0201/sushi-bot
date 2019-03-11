@@ -39,6 +39,12 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     type: "text",
                     text: "これはこれは"
                 }));
+            } else {
+                // replyMessage()で返信し、そのプロミスをevents_processedに追加。
+                events_processed.push(bot.replyMessage(event.replyToken, {
+                    type: "text",
+                    text: "はい？耳が遠いもんで。なんですか？"
+                }));
             }
         }
     });
