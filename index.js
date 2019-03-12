@@ -27,11 +27,43 @@ app.post('/bot/webhook', line.middleware(config), (req, res) => {
     });
 });
 
+//// event handler
+//function handleEvent(event) {
+//  if (event.type !== 'message' || event.message.type !== 'text') {
+//    // ignore non-text-message event
+//    return Promise.resolve(null);
+//  }
+//
+//  // create a echoing text message
+//  const echo = { type: 'text', text: event.message.text };
+//
+//  // use reply API
+//  return client.replyMessage(event.replyToken, echo);
+//}
+
 // event handler
 function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     // ignore non-text-message event
     return Promise.resolve(null);
+  }
+  
+  // この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
+  if (event.type == "message" && event.message.type == "text"){
+      // ユーザーからのテキストメッセージが「こんにちは」だった場合のみ反応。
+      if (event.message.text == "こんにちは"){
+          // replyMessage()で返信
+          client.replyMessage(event.replyToken, {
+              "type": "text",
+              "text": "こりゃどうも。こんにちは。"
+          });
+      } else {
+          // replyMessage()で返信
+          client.replyMessage(event.replyToken, {
+              "type": "text",
+              "text": "はい？耳が遠いもんで。なんですか？"
+          });
+      }
   }
 
   // create a echoing text message
@@ -40,6 +72,7 @@ function handleEvent(event) {
   // use reply API
   return client.replyMessage(event.replyToken, echo);
 }
+
 
 // listen on port
 const port = process.env.PORT || 3000;
